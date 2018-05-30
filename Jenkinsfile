@@ -54,6 +54,9 @@ pipeline {
 			
 			buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
 			}
+	    }
+	}
+
 	stage('Execute Maven') {
 		
 		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
@@ -64,4 +67,5 @@ pipeline {
 		
 		server.publishBuildInfo buildInfo
 		}
+}
 }
