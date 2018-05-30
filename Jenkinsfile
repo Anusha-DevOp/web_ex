@@ -21,23 +21,28 @@ pipeline {
 
      	stage('SonarQube analysis') {
 	     steps {
-		withMaven(maven : 'Maven-3.5.3') {
-		   bat 'mvn clean package sonar:sonar'
+		//Prepare SonarQube scanner enviornment
+		withSonarQubeEnv('SonarQube6.3') {
+		   bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'+ '-f all/pom.xml' +
+		   '-Dsonar.projectKey= Mvn-Sonar-JFrog-Tomcat-demo' +
+          '-Dsonar.login=admin ' +
+          '-Dsonar.password=admin ' +
+          '-Dsonar.language=java ' +
+          '-Dsonar.sources= src/main/webapp ' 
 		}
 	      }
 	}
 
-	stage('Quality Gate') {
-		steps {
-			timeout(time: 1, unit: 'HOURS') {
+//	stage('Quality Gate') {
+//		steps {
+//			timeout(time: 1, unit: 'HOURS') {
 			//Parameter indicates wether to set pipeline to UNSTABLE if Quality Gate fails
-		        // true = set pipeline toUNSTABLE, false = don't
+		        // true = set pipeline to UNSTABLE, false = don't
 			// Requires SonarQube Scanner for Jenkins 2.7+
-
-			waitForQualityGate abortPipeline: true
-		       }
-		 }
-	}
+//			waitForQualityGate abortPipeline: false
+//		       }
+//		 }
+//	}
 
 	stage('Artifactory configuration') {
 	   steps {
