@@ -20,9 +20,11 @@ pipeline {
         }
 
      	stage('SonarQube analysis') {
-		withMaven(maven: 'Maven-3.5.3') {
+	     steps {
+		withMaven(maven : 'Maven-3.5.3') {
 		   bat 'mvn clean package sonar:sonar'
 		}
+	      }
 	}
 
 	stage('Quality Gate') {
@@ -58,14 +60,19 @@ pipeline {
 	}
 
 	stage('Execute Maven') {
+		steps {
+		   script {
 		
 		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-		
+			}
 		}
+		
+	}
 
 	stage('Publish build info') {
-		
+		steps {
 		server.publishBuildInfo buildInfo
 		}
+	}
 }
 }
