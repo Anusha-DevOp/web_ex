@@ -1,6 +1,6 @@
 // Obtaining an Artifactory server instance defined in Jenkins:
 			
-def server = Artifactory.server 'http://localhost:8081/artifactory'
+def server = Artifactory.server 'Artifactory Version 4.15.0'
 
 		 //If artifactory is not defined in Jenkins, then create on:
 		// def server = Artifactory.newServer url: 'Artifactory url', username: 'username', password: 'password'
@@ -48,13 +48,13 @@ pipeline {
 			
 			rtMaven.resolver releaseRepo:'libs-release', snapshotRepo: 'libs-snapshot', server: server //Defining where Maven Build should download its dependencies from
 			
-			rtMaven.deployer.artifactDeploymentPatterns.addExclude("pom.xml") //Exclude artifacts from being deployed
+			//rtMaven.deployer.artifactDeploymentPatterns.addExclude("pom.xml") //Exclude artifacts from being deployed
 			
-			rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
+			//rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
 		    
 			buildInfo = Artifactory.newBuildInfo() //Publishing build-Info to artifactory
 			
-			buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
+			//buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
 			}
 	    }
 	}
