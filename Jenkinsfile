@@ -23,12 +23,7 @@ pipeline {
 	     steps {
 		//Prepare SonarQube scanner enviornment
 		withSonarQubeEnv('SonarQube6.3') {
-		   bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'+  
-		   '-Dsonar.projectKey= Mvn-Sonar-JFrog-Tomcat-demo' +
-          '-Dsonar.login=admin ' +
-          '-Dsonar.password=admin ' +
-          '-Dsonar.language=java ' +
-          '-Dsonar.sources= src/main/webapp ' 
+		   bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'
 		}
 	      }
 	}
