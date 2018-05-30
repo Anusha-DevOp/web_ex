@@ -68,8 +68,8 @@
     		<version>2.2</version>
    	<configuration>
         	<url>http://localhost:8082/manager/text</url>
-        	<server>TomcatServer</server>
-       		<path>/myfirstwebapp</path>
+        	<server>tomcat9x</server>
+       		<path>/webapps</path>
     </configuration>
 </plugin>
       </plugins>
