@@ -46,21 +46,24 @@ pipeline {
 //	}
 
 	stage('Artifactory configuration') {
+		
 	   steps {
 		script {
 			rtMaven.tool = 'Maven-3.5.3' //Maven tool name specified in Jenkins configuration
 		
-			rtMaven.deployer releaserRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server //Defining where the build artifacts should be deployed to
+			rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server //Defining where the build artifacts should be deployed to
 			
 			rtMaven.resolver releaseRepo:'libs-release', snapshotRepo: 'libs-snapshot', server: server //Defining where Maven Build should download its dependencies from
 			
-			//rtMaven.deployer.artifactDeploymentPatterns.addExclude("pom.xml") //Exclude artifacts from being deployed
+			rtMaven.deployer.artifactDeploymentPatterns.addExclude("pom.xml") //Exclude artifacts from being deployed
 			
-			//rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
+			rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
 		    
 			buildInfo = Artifactory.newBuildInfo() //Publishing build-Info to artifactory
 			
-			//buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
+			buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
+
+			buildInfo.env.capture = true
 			}
 	    }
 	}
@@ -69,7 +72,7 @@ pipeline {
 		steps {
 		   script {
 		
-		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
 			}
 		}
 		
@@ -78,6 +81,7 @@ pipeline {
 	stage('Publish build info') {
 		steps {
 		  script {
+
 		server.publishBuildInfo buildInfo
 		}
 		}
