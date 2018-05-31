@@ -57,7 +57,7 @@ pipeline {
 			
 			rtMaven.deployer.artifactDeploymentPatterns.addExclude("pom.xml") //Exclude artifacts from being deployed
 			
-			rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
+			//rtMaven.deployer.deployArtifacts =false // Disable artifacts deployment during Maven run
 		    
 			buildInfo = Artifactory.newBuildInfo() //Publishing build-Info to artifactory
 			
@@ -72,7 +72,7 @@ pipeline {
 		steps {
 		   script {
 		
-		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
+		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
 			}
 		}
 		
