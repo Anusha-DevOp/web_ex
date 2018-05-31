@@ -8,7 +8,7 @@ def server = Artifactory.server 'Artifactory Version 4.15.0'
 //Create Artifactory Maven Build instance
 def rtMaven = Artifactory.newMavenBuild()
 
-def buildinfo
+def buildInfo
 
 pipeline {
     agent any
